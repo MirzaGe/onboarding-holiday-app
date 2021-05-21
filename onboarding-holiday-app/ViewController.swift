@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupViews()
         // Do any additional setup after loading the view.
     }
     // 2 func for lifecycle of view controllers
@@ -29,6 +30,15 @@ class ViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
+    private func setupViews() {
+        GetStartedButton.layer.cornerRadius = 28
+        GetStartedButton.layer.masksToBounds = true
     }
 
     @IBAction func getStartedButtonTapped(_ sender: Any) {
