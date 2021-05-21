@@ -29,6 +29,7 @@ class ViewController: UIViewController {
         //for hiding nav bar
         navigationController?.setNavigationBarHidden(true, animated: animated)
         setupPlayerIfNeeded()
+        restartVideo()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -43,6 +44,7 @@ class ViewController: UIViewController {
     private func setupViews() {
         GetStartedButton.layer.cornerRadius = 28
         GetStartedButton.layer.masksToBounds = true
+        darkView.backgroundColor = .clear
     }
     
     private func buildPlayer() -> AVPlayer? {
