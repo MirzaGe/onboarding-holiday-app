@@ -7,20 +7,24 @@
 
 import UIKit
 import AVFoundation
+import Combine
 
-class ViewController: UIViewController {
+class OnboardingViewController: UIViewController {
 
     @IBOutlet weak var darkView: UIView!
     @IBOutlet weak var GetStartedButton: UIButton!
     
     private var player: AVPlayer?
     private var playerLayer: AVPlayerLayer?
+    private let notificationCenter = NotificationCenter.default
+    private var appEventSubcribers = [AnyCancellable]()
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        // Do any additional setup after loading the view.
+    
     }
     // 2 func for lifecycle of view controllers
     
@@ -28,6 +32,7 @@ class ViewController: UIViewController {
         super.viewWillAppear(animated)
         //for hiding nav bar
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        observeAppEvents()
         setupPlayerIfNeeded()
         restartVideo()
     }
@@ -35,6 +40,13 @@ class ViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
+        removeAppEventsSubscribers()
+        removePlayer()
+       // print(player,playerLayer)
+    }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        playerLayer?.frame = view.bounds
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -42,16 +54,15 @@ class ViewController: UIViewController {
     }
     
     private func setupViews() {
-        GetStartedButton.layer.cornerRadius = 28
+        GetStartedButton.layer.cornerRadius = GetStartedButton.frame.height / 2
         GetStartedButton.layer.masksToBounds = true
-        darkView.backgroundColor = .clear
+        darkView.backgroundColor = UIColor(white: 0.1 , alpha: 0.4)
     }
     
     private func buildPlayer() -> AVPlayer? {
         guard let filepath = Bundle.main.path(forResource: "bg_video", ofType: "mp4") else {
             return nil }
-        
-        let url = URL (fileURLWithPath: filepath)
+        let url = URL(fileURLWithPath: filepath)
             let player = AVPlayer(url: url)
         player.actionAtItemEnd = .none
         player.isMuted = true
@@ -70,12 +81,13 @@ class ViewController: UIViewController {
     
     private func restartVideo() {
         player?.seek(to: .zero)
+        playvideo()
     }
     private func pauseVideo() {
         player?.pause()
     }
     
-    func setupPlayerIfNeeded() {
+   private func setupPlayerIfNeeded() {
        player = buildPlayer()
        playerLayer = buildPlayerLayer()
         
@@ -85,8 +97,40 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func getStartedButtonTapped(_ sender: Any) {
+    private func removePlayer() {
+        player?.pause()
+        player = nil
+        playerLayer?.removeFromSuperlayer()
+        playerLayer =  nil
     }
+    private func observeAppEvents() {
+        
+        notificationCenter.publisher(for: .AVPlayerItemDidPlayToEndTime).sink { [weak self] _  in
+            self?.restartVideo()
+           // print("video has ended")
+        }.store(in: &appEventSubcribers)
+        
+        notificationCenter.publisher(for: UIApplication.willResignActiveNotification).sink { [weak self ] _ in
+            self?.pauseVideo()
+            print("will Resign active")
+        }.store(in: &appEventSubcribers)
+        
+        notificationCenter.publisher(for: UIApplication.didBecomeActiveNotification).sink { [weak self ] _ in
+            self?.pauseVideo()
+            print("will Resign active")
+        }.store(in: &appEventSubcribers)
+        
+    }
+    
+    
+    private func removeAppEventsSubscribers() {
+        appEventSubcribers.forEach { subscriber in
+            subscriber.cancel()
+        }
+        
+    }
+    
+    
     
 }
 
