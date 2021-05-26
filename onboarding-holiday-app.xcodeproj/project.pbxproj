@@ -17,7 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		441D93B5265E932F00A4EFE2 /* bg_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = bg_video.mp4; sourceTree = SOURCE_ROOT; };
+		441D93B5265E932F00A4EFE2 /* bg_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = bg_video.mp4; path = "onboarding-holiday-app/assets/bg_video.mp4"; sourceTree = SOURCE_ROOT; };
 		44BE3D48265844CF008E5A31 /* onboarding-holiday-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "onboarding-holiday-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		44BE3D4B265844CF008E5A31 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		44BE3D4D265844CF008E5A31 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -39,6 +39,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		441D93B9265E94F100A4EFE2 /* assets */ = {
+			isa = PBXGroup;
+			children = (
+				441D93B5265E932F00A4EFE2 /* bg_video.mp4 */,
+			);
+			path = assets;
+			sourceTree = "<group>";
+		};
+		441D93BA265E952500A4EFE2 /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				44BE3D4F265844CF008E5A31 /* OnboardingViewController.swift */,
+			);
+			path = controller;
+			sourceTree = "<group>";
+		};
 		44BE3D3F265844CF008E5A31 = {
 			isa = PBXGroup;
 			children = (
@@ -58,10 +74,10 @@
 		44BE3D4A265844CF008E5A31 /* onboarding-holiday-app */ = {
 			isa = PBXGroup;
 			children = (
-				441D93B5265E932F00A4EFE2 /* bg_video.mp4 */,
+				441D93BA265E952500A4EFE2 /* controller */,
+				441D93B9265E94F100A4EFE2 /* assets */,
 				44BE3D4B265844CF008E5A31 /* AppDelegate.swift */,
 				44BE3D4D265844CF008E5A31 /* SceneDelegate.swift */,
-				44BE3D4F265844CF008E5A31 /* OnboardingViewController.swift */,
 				44BE3D51265844CF008E5A31 /* Main.storyboard */,
 				44BE3D54265844D1008E5A31 /* Assets.xcassets */,
 				44BE3D56265844D1008E5A31 /* LaunchScreen.storyboard */,
